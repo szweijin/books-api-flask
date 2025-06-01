@@ -40,8 +40,8 @@
                 <td>{{ book.title }}</td>
                 <td>{{ book.author }}</td>
                 <td>{{ book.language }}</td>
-                <td>{{ "%.2f"|format(book.discount) }}</td>
-                <td>{{ "%.2f"|format(book.price) }}</td>
+                <td>{{ "%.2f"|format(book.discount or 0) }}</td>
+                <td>{{ "%.2f"|format(book.price or 0) }}</td>
                 <td><a href="{{ book.link }}" target="_blank">Buy</a></td>
             </tr>
             {% endfor %}
