@@ -3,7 +3,6 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import or_
 import os
 from dotenv import load_dotenv
-from datetime import datetime
 
 load_dotenv()
 
@@ -21,7 +20,6 @@ class Book(db.Model):
     discount = db.Column(db.Float)
     price = db.Column(db.Float)
     link = db.Column(db.String(300))
-    date = db.Column(db.DateTime, default=datetime.utcnow)
 
     def to_dict(self):
         return {
