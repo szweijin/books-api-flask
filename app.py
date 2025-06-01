@@ -1,0 +1,50 @@
+from flask import Flask, jsonify, request
+from flask_sqlalchemy import SQLAlchemy
+
+app = Flask(__name__)
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///books.db"
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+db = SQLAlchemy(app)
+
+# 模型
+class Book(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String)
+    author = db.Column(db.String)
+    language = db.Column(db.String)
+    discount = db.Column(db.Float)
+    price = db.Column(db.Float)
+    link = db.Column(db.String)
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "title": self.title,
+            "author": self.author,
+            "language": self.language,
+            "discount": self.discount,
+            "price": self.price,
+            "link": self.link
+        }
+
+# 路由：取得所有書籍
+@app.route("/books")
+def get_books():
+    keyword = request.args.get("keyword", "")
+    query = Book.query
+    if keyword:
+        keyword = f"%{keyword}%"
+        query = query.filter(
+            db.or_(Book.title.like(keyword), Book.author.like(keyword))
+        )
+    books = query.all()
+    return jsonify([book.to_dict() for book in books])
+
+# 路由：取得特定書籍
+@app.route("/books/<int:book_id>")
+def get_book(book_id):
+    book = Book.query.get_or_404(book_id)
+    return jsonify(book.to_dict())
+
+if __name__ == "__main__":
+    app.run(debug=True)
