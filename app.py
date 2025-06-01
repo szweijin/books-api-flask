@@ -29,8 +29,7 @@ class Book(db.Model):
             "language": self.language,
             "discount": self.discount,
             "price": self.price,
-            "link": self.link,
-            "date": self.date.isoformat()
+            "link": self.link
         }
 
 @app.route("/")
