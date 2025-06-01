@@ -3,6 +3,5 @@ chrome-mac-arm64/
 .venv/
 __pycache__/
 *.pyc
-.env
 books.db
 *.csv
