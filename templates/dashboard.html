@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8" />
+    <title>Book Dashboard</title>
+    <style>
+        table {
+            width: 90%;
+            border-collapse: collapse;
+            margin: 20px auto;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+        th {
+            background: #f2f2f2;
+        }
+        input[type="text"] {
+            width: 300px;
+            margin: 10px auto;
+            display: block;
+            padding: 8px;
+        }
+    </style>
+</head>
+<body>
+    <h2 style="text-align:center;">Book Dashboard</h2>
+    <input type="text" id="search" placeholder="搜尋書名或作者" />
+
+    <table id="books-table">
+        <thead>
+            <tr>
+                <th>Title</th><th>Author</th><th>Language</th><th>Discount</th><th>Price</th><th>Link</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for book in books %}
+            <tr>
+                <td>{{ book.title }}</td>
+                <td>{{ book.author }}</td>
+                <td>{{ book.language }}</td>
+                <td>{{ "%.2f"|format(book.discount) }}</td>
+                <td>{{ "%.2f"|format(book.price) }}</td>
+                <td><a href="{{ book.link }}" target="_blank">Buy</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+<script>
+document.getElementById("search").addEventListener("input", function() {
+    const keyword = this.value.toLowerCase();
+    const rows = document.querySelectorAll("#books-table tbody tr");
+    rows.forEach(row => {
+        const title = row.cells[0].textContent.toLowerCase();
+        const author = row.cells[1].textContent.toLowerCase();
+        if (title.includes(keyword) || author.includes(keyword)) {
+            row.style.display = "";
+        } else {
+            row.style.display = "none";
+        }
+    });
+});
+</script>
+</body>
+</html>
