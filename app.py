@@ -53,7 +53,7 @@ def get_book(book_id):
 
 @app.route("/dashboard")
 def dashboard():
-    books = Book.query.order_by(Book.date.desc()).all()
+    books = Book.query.all()
     return render_template("dashboard.html", books=books)
 
 @app.route("/trends")
