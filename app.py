@@ -1,14 +1,15 @@
 from flask import Flask, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
+import os
+from dotenv import load_dotenv
+load_dotenv()
 
 app = Flask(__name__)
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///books.db"
+
+# 自動讀取環境變數 DATABASE_URL（Render 會提供）
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db = SQLAlchemy(app)
-
-@app.route("/")
-def index():
-    return "Welcome to the Book API! Visit /books to see the list."
 
 # 模型
 class Book(db.Model):
@@ -30,6 +31,10 @@ class Book(db.Model):
             "price": self.price,
             "link": self.link
         }
+
+@app.route("/")
+def index():
+    return "Welcome to the Book API! Visit /books to see the list."
 
 # 路由：取得所有書籍
 @app.route("/books")
