@@ -6,6 +6,10 @@ app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///books.db"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db = SQLAlchemy(app)
 
+@app.route("/")
+def index():
+    return "Welcome to the Book API! Visit /books to see the list."
+
 # 模型
 class Book(db.Model):
     id = db.Column(db.Integer, primary_key=True)
